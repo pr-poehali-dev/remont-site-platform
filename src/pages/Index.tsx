@@ -8,6 +8,7 @@ import Icon from '@/components/ui/icon';
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [compareSlider, setCompareSlider] = useState(50);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const portfolioItems = [
     {
@@ -56,6 +57,7 @@ const Index = () => {
 
   const scrollToSection = (section: string) => {
     setActiveSection(section);
+    setMobileMenuOpen(false);
     const element = document.getElementById(section);
     element?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -85,6 +87,45 @@ const Index = () => {
             ))}
           </div>
           <Button className="hidden md:block">Получить консультацию</Button>
+          
+          <button
+            className="md:hidden flex flex-col gap-1.5 p-2"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Меню"
+          >
+            <span className={`w-6 h-0.5 bg-foreground transition-all duration-300 ${
+              mobileMenuOpen ? 'rotate-45 translate-y-2' : ''
+            }`} />
+            <span className={`w-6 h-0.5 bg-foreground transition-all duration-300 ${
+              mobileMenuOpen ? 'opacity-0' : ''
+            }`} />
+            <span className={`w-6 h-0.5 bg-foreground transition-all duration-300 ${
+              mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''
+            }`} />
+          </button>
+        </div>
+        
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ${
+          mobileMenuOpen ? 'max-h-96' : 'max-h-0'
+        }`}>
+          <div className="container mx-auto px-4 py-4 flex flex-col gap-4 bg-white border-t animate-fade-in">
+            {['home', 'services', 'portfolio', 'pricing', 'contacts'].map((section) => (
+              <button
+                key={section}
+                onClick={() => scrollToSection(section)}
+                className={`font-semibold text-left py-2 transition-all hover:text-primary hover:translate-x-2 ${
+                  activeSection === section ? 'text-primary' : 'text-foreground'
+                }`}
+              >
+                {section === 'home' && 'Главная'}
+                {section === 'services' && 'Услуги'}
+                {section === 'portfolio' && 'Портфолио'}
+                {section === 'pricing' && 'Прайс'}
+                {section === 'contacts' && 'Контакты'}
+              </button>
+            ))}
+            <Button className="w-full" onClick={() => scrollToSection('contacts')}>Получить консультацию</Button>
+          </div>
         </div>
       </nav>
 
